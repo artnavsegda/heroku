@@ -12,7 +12,7 @@ express()
         });
 
         const page = await browser.newPage();
-        await page.goto('https://example.com');
+        await page.goto('https://irz-puptest.herokuapp.com/printer.html');
         await page.screenshot().then(function(buffer) {
             res.setHeader('Content-Disposition', 'attachment;filename="' + 'jeeson' + '.png"');
             res.setHeader('Content-Type', 'image/png');

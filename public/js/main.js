@@ -4,7 +4,7 @@ var qrcode = new QRCode(document.getElementById("qrcode"), {
 });
 
 (function IIFE() {
-    fetch('http://192.168.56.1:8080/router_object.json')
+    fetch('router_object.json')
     .then(function(response) {
         return response.json();
     })

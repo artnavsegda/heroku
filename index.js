@@ -26,8 +26,8 @@ express()
         });
 
         const page = await browser.newPage();
-        // await page.goto('https://irz-puptest.herokuapp.com/printer.html');
-        await page.goto('http://localhost:5000/printer.html');
+        await page.goto('https://irz-puptest.herokuapp.com/printer.html');
+        // await page.goto('http://localhost:5000/printer.html');
         await page.pdf({width: '11cm', height : '7cm'}).then(function(buffer) {
             res.setHeader('Content-Disposition', 'attachment;filename="' + 'jeeson' + '.pdf"');
             res.setHeader('Content-Type', 'application/pdf');

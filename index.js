@@ -20,6 +20,7 @@ express()
   .get('/router_object.json', (req,res) => res.json(label))
   .get('/genpdf', (req, res) => {
     label = req.query;
+    evalVar = label.copyright;
     (async() => {
         const browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -27,7 +28,10 @@ express()
 
         const page = await browser.newPage();
         await page.goto('https://irz-puptest.herokuapp.com/printer.html');
-        // await page.goto('http://localhost:5000/printer.html');
+        //await page.goto('http://localhost:5000/printer.html');
+        await page.evaluate((label) => {
+          do_buisness(label);
+        }, label);
         await page.pdf({width: '11cm', height : '7cm'}).then(function(buffer) {
             res.setHeader('Content-Disposition', 'attachment;filename="' + 'jeeson' + '.pdf"');
             res.setHeader('Content-Type', 'application/pdf');

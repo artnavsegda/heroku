@@ -1,44 +1,15 @@
 const express = require('express')
-const port = process.env.PORT || 5000;
-const puppeteer = require('puppeteer');
+const app = express()
+app.use(express.json())
+const port = 3000
 
-var one;
-var two;
+var dictionary = ["hi","hello","cat", "dog", "car", "bird", "danger", "love", "computer"];
 
-var label = {
-  title: "S04-F4",
-  IMEI: "5456457878645647",
-  code: "SAAH10000009",
-  user: "admin",
-  pass: "admin",
-  copyright: "Сделано в России"
-};
+app.get('/', (req, res) => res.send('Hello World!'))
 
-express()
-  .use(express.static('public'))
-  .get('/', (req, res) => res.send('Hello World!'))
-  .get('/router_object.json', (req,res) => res.json(label))
-  .get('/genpdf', (req, res) => {
-    label = req.query;
-    evalVar = label.copyright;
-    (async() => {
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+app.get('/q', (req, res) => {
+  console.log("query " + req.query.ask);
+  res.send(dictionary.filter((element) => element.startsWith(req.query.ask)));
+})
 
-        const page = await browser.newPage();
-        await page.goto('https://irz-puptest.herokuapp.com/printer.html');
-        //await page.goto('http://localhost:5000/printer.html');
-        await page.evaluate((label) => {
-          do_buisness(label);
-        }, label);
-        await page.pdf({width: '11cm', height : '7cm'}).then(function(buffer) {
-            res.setHeader('Content-Disposition', 'attachment;filename="' + 'jeeson' + '.pdf"');
-            res.setHeader('Content-Type', 'application/pdf');
-            res.send(buffer)
-        });
-
-        await browser.close();
-    })();
-  })
-  .listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
